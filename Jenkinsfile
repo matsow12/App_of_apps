@@ -71,21 +71,24 @@ pipeline{
 
         stage('Run Ansible'){
             steps{
-                script{
-                    sh "ansible-galaxy install -r requirements.yml"
-                    withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", "BACKEND_IMAGE=$backendImage:$backendDockerTag"]){
-                        ansiblePlaybook inventory: 'inventory', playbook: 'playbook'
-                    }
-                }
-            }
+                script {
+                        sh "ansible-galaxy install -r requirements.yml"
+                        withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", 
+                                 "BACKEND_IMAGE=$backendImage:$backendDockerTag"]) {
+                            ansiblePlaybook inventory: 'inventory', playbook: 'playbook.yml'
+                                }
+                }        
+            }        
         }
-        
+                
 
     }
     post{
         always{
-            sh "docker-compose down"
-            cleanWs()
+            withEnv(["FRONTEND_IMAGE=$frontendImage:$frontendDockerTag", "BACKEND_IMAGE=$backendImage:$backendDockerTag"]){
+                sh "docker-compose down"
+                cleanWs()
+            }   
         }
     }
 }
