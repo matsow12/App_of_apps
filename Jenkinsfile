@@ -10,7 +10,7 @@ pipeline{
         label 'agent'
     }
     tools{
-        terraform 'Terragorm'
+        terraform 'Terraform'
     }
     stages{
         stage('Get Code') {
