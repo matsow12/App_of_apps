@@ -24,21 +24,21 @@
           - docker-compose
     - name: Mkdir if state
       file:
-        path: "{{deployment_path}}"
+        path: "{{ deployment_path }}"
         state: directory
         mode: '0755'
     
     - name: CP docker compose
       copy:
-        src: "{{compose_path}}"
-        dsc: "{{deployment_path}}"
+        src: "{{ compose_path }}"
+        dest: "{{ deployment_path }}"
     
     - name: Run
       become: true 
       docker_compose:
-        project_src: "{{deployment_path}}"
+        project_src: "{{ deployment_path }}"
         build: yes
         debug: yes
       environment:
-        FRONTEND_IMAGE: "{{lookup('env','FRONTEND_IMAGE')}}"
-        BACKEND_IMAGE: "{{lookup('env','BACKEND_IMAGE')}}"
+        FRONTEND_IMAGE: "{{ lookup('env','FRONTEND_IMAGE') }}"
+        BACKEND_IMAGE: "{{ lookup('env','BACKEND_IMAGE') }}"
